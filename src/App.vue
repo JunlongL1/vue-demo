@@ -10,6 +10,7 @@ import Line from './views/main/index.vue'
   <router-link to="/bar"> bar chart</router-link>
   <router-link to="/form"> form</router-link>
   <router-link to="/words"> words</router-link>
+  <router-link to="/graph"> graph</router-link>
   <router-view></router-view>
 </template>
 
