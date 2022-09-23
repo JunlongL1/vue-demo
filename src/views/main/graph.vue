@@ -1,5 +1,5 @@
 <template>
-  <div ref="graphRef" style="width: 400px; height: 400px"></div>
+  <div ref="graphRef" style="width: 1000px; height: 400px"></div>
 </template>
 
 <script>
@@ -9,252 +9,325 @@
   export default defineComponent({
     setup() {
       const graphRef = ref(null)
-      const chartInstance = shallowRef(null)
-      const data = [{
-        id: "0",
-        name: "Myriel",
-        // symbolSize: 19.12381,
-        // x: -266.82776,
-        // y: 299.6904,
+      const myChart = shallowRef(null)
+      const currentGraph = {
+        nodes: {},
+        links: {}
+      }
+      const nodeMap = {}
+      var graph = {
+        nodes : [{
+        name: "0",
         value: 28.685715,
-        category: 0
+        category: 'a',
+        symbolSize: 100
       },
       {
-        id: "1",
-        name: "Napoleon",
-        // symbolSize: 2.6666666666666665,
-        // x: -418.08344,
-        // y: 446.8853,
+        name: "1",
         value: 4,
-        category: 1
+        category: 'b',
+        symbolSize: 70
       },
       {
-        id: "2",
-        name: "MlleBaptistine",
-        // symbolSize: 6.323809333333333,
-        // x: -212.76357,
-        // y: 245.29176,
+        name: "2",
         value: 9.485714,
-        category: 1
+        category: 'b',
+        symbolSize: 70
       },
       {
-        id: "3",
-        name: "MmeMagloire",
-        // symbolSize: 6.323809333333333,
-        // x: -242.82404,
-        // y: 235.26283,
+        name: "3",
         value: 9.485714,
-        category: 1
+        category: 'b',
+        symbolSize: 70
       },
       {
-        id: "4",
-        name: "CountessDeLo",
-        // symbolSize: 2.6666666666666665,
-        // x: -379.30386,
-        // y: 429.06424,
+        name: "4",
         value: 4,
-        category: 1
+        category: 'b',
+        symbolSize: 70
       },
       {
-        id: "5",
-        name: "Geborand",
-        // symbolSize: 2.6666666666666665,
-        // x: -417.26337,
-        // y: 406.03506,
+        name: "5",
         value: 4,
-        category: 1
+        category: 'b',
+        symbolSize: 70
       },
       {
-        id: "6",
-        name: "Champtercier",
-        // symbolSize: 2.6666666666666665,
-        // x: -332.6012,
-        // y: 485.16974,
+        name: "6",
         value: 4,
-        category: 2
+        category: 'c',
+        symbolSize: 50
       },
       {
-        id: "7",
-        name: "Cravatte",
-        // symbolSize: 2.6666666666666665,
-        // x: -382.69568,
-        // y: 475.09113,
+        name: "7",
         value: 4,
-        category: 2
+        category: 'c',
+        symbolSize: 50
       },
       {
-        id: "8",
-        name: "Count",
-        // symbolSize: 2.6666666666666665,
-        // x: -320.384,
-        // y: 387.17325,
+        name: "8",
         value: 4,
-        category: 2
+        category: 'c',
+        symbolSize: 50
       },
       {
-        id: "9",
-        name: "OldMan",
-        // symbolSize: 2.6666666666666665,
-        // x: -344.39832,
-        // y: 451.16772,
+        name: "9",
         value: 4,
-        category: 2
+        category: 'c',
+        symbolSize: 50
       },
       {
-        id: "10",
-        name: "Labarre",
-        // symbolSize: 2.6666666666666665,
-        // x: -89.34107,
-        // y: 234.56128,
+        name: "10",
         value: 4,
-        category: 2
+        category: 'c',
+        symbolSize: 50
       },
       {
-        id: "11",
-        name: "Valjean",
-        // symbolSize: 66.66666666666667,
-        // x: -87.93029,
-        // y: -6.8120565,
+        name: "11",
         value: 100,
-        category: 2
+        category: 'c',
+        symbolSize: 50
       },
       {
-        id: "12",
-        name: "Marguerite",
-        // symbolSize: 4.495239333333333,
-        // x: -339.77908,
-        // y: -184.69139,
+        name: "12",
         value: 6.742859,
-        category: 2
+        category: 'c',
+        symbolSize: 50
       },
       {
-        id: "13",
-        name: "MmeDeR",
-        // symbolSize: 2.6666666666666665,
-        // x: -194.31313,
-        // y: 178.55301,
+        name: "13",
         value: 4,
-        category: 2
+        category: 'c',
+        symbolSize: 50
       },
       {
-        id: "14",
-        name: "Isabeau",
-        // symbolSize: 2.6666666666666665,
-        // x: -158.05168,
-        // y: 201.99768,
+        name: "14",
         value: 4,
-        category: 2
+        category: 'c',
+        symbolSize: 50
       },
       {
-        id: "15",
-        name: "Gervais",
-        // symbolSize: 2.6666666666666665,
-        // x: -127.701546,
-        // y: 242.55057,
+        name: "15",
         value: 4,
-        category: 2
-      }]
-      const links = [{
-        source: "1",
-        target: "0"
-      },
-      {
-        source: "2",
-        target: "0"
-      },
-      {
-        source: "3",
-        target: "0"
-      },
-      {
-        source: "4",
-        target: "0"
-      },
-      {
-        source: "5",
-        target: "0"
-      },
-      {
-        source: "6",
-        target: "1"
-      },
-      {
-        source: "7",
-        target: "2"
-      },
-      {
-        source: "8",
-        target: "2"
-      },
-      {
-        source: "9",
-        target: "3"
-      },
-      {
-        source: "10",
-        target: "3"
-      },
-      {
-        source: "11",
-        target: "4"
-      },
-      {
-        source: "12",
-        target: "4"
-      },
-      {
-        source: "13",
-        target: "5"
-      },
-      {
-        source: "14",
-        target: "5"
-      },
-      {
-        source: "15",
-        target: "1"
-      }]
+        category: 'c',
+        symbolSize: 50
+        }],
+
+        links : [{
+          source: "0",
+          target: "1"
+        },
+        {
+          source: "0",
+          target: "2"
+        },
+        {
+          source: "0",
+          target: "3"
+        },
+        {
+          source: "0",
+          target: "4"
+        },
+        {
+          source: "0",
+          target: "5"
+        },
+        {
+          source: "1",
+          target: "6"
+        },
+        {
+          source: "2",
+          target: "7"
+        },
+        {
+          source: "2",
+          target: "8"
+        },
+        {
+          source: "3",
+          target: "9"
+        },
+        {
+          source: "3",
+          target: "10"
+        },
+        {
+          source: "4",
+          target: "11"
+        },
+        {
+          source: "4",
+          target: "12"
+        },
+        {
+          source: "5",
+          target: "13"
+        },
+        {
+          source: "5",
+          target: "14"
+        },
+        {
+          source: "1",
+          target: "15"
+        }]
+      }
+      const defaultCategory = 'a'
+      
       const categories = [{
         name: "a"
       },{
         name: "b"
       },{
         name: "c"
-      },]
-      onMounted(() => {
-        chartInstance.value = echarts.init(graphRef.value)
-        const options = {
-          tooltip: {},
-          series: [
-            {
-              name: 'test',
-              type: 'graph',
-              layout: 'none',
-              data: data,
-              links: links,
-              categories: categories,
-              roam: true,
-              label: {
-                show: true,
-                position: 'right',
-                formatter: '{b}'
-              },
-              labelLayout: {
-                hideOverlap: true
-              },
-              scaleLimit: {
-                min: 0.4,
-                max: 2
-              },
-              lineStyle: {
-                color: 'source',
-                curveness: 0.3
-              }
-            }
-          ]
+      }]
+      // 页面加载时，第一次初始化图
+      const init = () => {
+        // 根据定义的常量，产生currentGraph的默认数据
+        // 遍历全部nodes和links，产生node映射map
+        for (let i = 0; i < graph.nodes.length; i++) {
+          if (graph.nodes[i].category === defaultCategory) {
+            currentGraph.nodes[graph.nodes[i].name] = graph.nodes[i]
+          }
+          nodeMap[graph.nodes[i].name] = graph.nodes[i]
+          nodeMap[graph.nodes[i].name]["links"] = {}
+          nodeMap[graph.nodes[i].name]["nodes"] = {}
+          nodeMap[graph.nodes[i].name]["hasAppend"] = false
         }
-        chartInstance.value.setOption({ baseOption: options })
-        chartInstance.value.resize()
+        for (let i = 0; i < graph.links.length; i++) {
+          let link = graph.links[i];
+          if (nodeMap[link.source] !== undefined && nodeMap[link.target] !== undefined) {
+            nodeMap[link.source].links[link.target] = link
+            nodeMap[link.source].nodes[nodeMap[link.target].name] = nodeMap[link.target]
+          }
+        }
+        for (let i = 0; i < graph.nodes.length; i++) {
+          graph.nodes[i].itemStyle = null
+          graph.nodes[i].label = {
+            normal: {
+              show: graph.nodes[i].symbolSize > 15,
+            },
+          }
+        }
+        myChart.value.on("click", function (params) {
+          if (params.dataType === "node") {
+            const node = nodeMap[params.data.name]
+            if (node.hasAppend === true) {
+              remove(node.name)
+            } else {
+              append(node.name)
+            }
+          }
+        })
+        redrawGraph()
+      }
+      const redrawGraph = () => {
+        option.series[0].data = Object.values(currentGraph.nodes)
+        option.series[0].links = Object.values(currentGraph.links)
+        myChart.value.setOption(option)
+        myChart.value.resize()
+      }
+      // 处理点击节点展开
+      const append = (nodeName) => {
+        // 根据nodeName从nodeMap里拿出对应的nodes和links，并append到currentGraph.nodes currentGraph.links
+        let node = nodeMap[nodeName];
+        if (
+          node.hasAppend === true ||
+          Object.keys(node.nodes).length === 0 ||
+          Object.keys(node.links).length === 0
+        ) {
+          alert("无法继续展开")
+          return
+        }
+        Object.values(node.nodes).forEach((n) => {
+          currentGraph.nodes[n.name] = n;
+        })
+        Object.values(node.links).forEach((l) => {
+          currentGraph.links[l.source + "_" + l.target] = l;
+        })
+        node.hasAppend = true
+        redrawGraph()
+      }
+      // 处理点击节点收缩
+      const remove = (nodeName) => {
+        //根据nodeName从nodeMap里拿出对应的nodes和links，从currentGraph.nodes currentGraph.links删除当前节点的nodes和links并且递归
+        let node = nodeMap[nodeName];
+        Object.values(node.nodes).forEach((n) => {
+          delete currentGraph.nodes[n.name]
+          if (n.hasAppend === true && Object.keys(n.nodes).length > 0) {
+            remove(n.name);
+          }
+        })
+        Object.values(node.links).forEach((l) => {
+          delete currentGraph.links[l.source + "_" + l.target]
+        })
+        // 设置flag 等于false
+        node.hasAppend = false
+
+        redrawGraph()
+      }
+      const option = {
+        title: {
+          text: 'test',
+          top: "top",
+          left: "center",
+        },
+        tooltip: {},
+        legend: [],
+        animation: false,
+        series: [
+          {
+            type: "graph",
+            layout: "force",
+            data: Object.values(currentGraph.nodes),
+            links: Object.values(currentGraph.links),
+            categories: categories,
+            roam: false,
+            focusNodeAdjacency: false,
+            label: {
+              position: "right",
+              formatter: "{b}",
+            },
+            lineStyle: {
+              color: "target",
+              opacity: 0.6,
+            },
+            emphasis: {
+              lineStyle: {
+                width: 10,
+              },
+            },
+            force: {
+              layoutAnimation: false,
+              repulsion: 5000,
+            },
+          },
+        ],
+      }
+
+      //参考树节点修改上面的节点折叠
+      // if (option && typeof option === "object") {
+      //   myChart.value.setOption(option, true);
+      //   myChart.value.on("mousedown", (e) => {
+      //     const name = e.data.name;
+      //     const curNode = myChart.value._chartsViews[0]._data.nodes.find((item) => {
+      //       return item.name === name;
+      //     });
+      //     const depth = curNode.depth;
+      //     const curIsExpand = curNode.isExpand;
+      //     myChart.value._chartsViews[0]._data.tree._nodes.forEach((item, index) => {
+      //       if (item.depth === depth && item.name !== name && !curIsExpand) {
+      //         item.isExpand = false;
+      //       }
+      //     });
+      //   });
+      // }
+
+      onMounted(() => {
+        myChart.value = echarts.init(graphRef.value)
+        init()
       })
 
       return {
