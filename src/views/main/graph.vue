@@ -23,6 +23,8 @@
       },{
         name: "c"
       }]
+      let offsetX = 0, offsetY = 0
+
       // 页面加载时，第一次初始化图
       const init = () => {
         // 根据定义的常量，产生currentGraph的默认数据
@@ -64,6 +66,8 @@
         currentGraph.nodes[newNode.name] = newNode
         myChart.value.on("click", function (params) {
           console.log(params)
+          offsetX = params.event.offsetX
+          offsetY = params.event.offsetY
           if (params.dataType === "node") {
             const node = nodeMap[params.data.name]
             if (node.hasAppend === true) {
@@ -164,12 +168,13 @@
         animation: false,
         series: [
           {
+            center: [],
             type: "graph",
             layout: "force",
             data: Object.values(currentGraph.nodes),
             links: Object.values(currentGraph.links),
             categories: categories,
-            roam: false,
+            roam: true,
             focusNodeAdjacency: false,
             label: {
               position: "right",
