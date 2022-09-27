@@ -115,7 +115,11 @@
           }
           const newLink = {
             source: nodeName,
-            target: newNode.name
+            target: newNode.name,
+            label: {
+              show: true,
+              formatter: 'test'
+            }
           }
           nodeMap[newNode.name] = newNode
 
